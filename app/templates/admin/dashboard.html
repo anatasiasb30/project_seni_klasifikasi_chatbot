@@ -1,0 +1,460 @@
+{% extends "base.html" %} {% block title %}Admin Dashboard - NatsArt.AI{%
+endblock %} {% block content %}
+<input
+  type="hidden"
+  id="csrf_token"
+  value="{{ csrf_token() if csrf_token is defined else '' }}"
+/>
+<div class="admin-wrapper">
+  <div class="admin-page-header">
+    <h1>Dashboard Admin</h1>
+    <p>Mengelola Pengguna dan Manajemen Konten Berita</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card border-purple">
+      <div class="stat-content">
+        <span class="stat-label">Total Pengguna</span>
+        <h2 class="stat-number">{{ stats.users }}</h2>
+      </div>
+      <div class="stat-icon icon-bg-purple">
+        <span class="material-icons">person</span>
+      </div>
+    </div>
+
+    <div class="stat-card border-orange">
+      <div class="stat-content">
+        <span class="stat-label">Total Konten</span>
+        <h2 class="stat-number">
+          {{ stats.articles if stats.articles is defined else 0 }}
+        </h2>
+      </div>
+      <div class="stat-icon icon-bg-orange">
+        <span class="material-icons">menu_book</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-content-card">
+    <div class="card-header-row">
+      <h3>Daftar Akun Pengguna</h3>
+      <button class="btn-add-account" onclick="openCreateModal()">
+        <span class="material-icons">add_circle</span> Tambah Akun
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th width="10%">ID</th>
+            <th width="30%">INFO PENGGUNA</th>
+            <th width="20%">ROLE</th>
+            <th width="25%">AKSI</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in users_list %}
+          <tr>
+            <td class="text-muted">#{{ loop.index }}</td>
+            <td>
+              <div class="user-info-cell">
+                <span class="u-fullname">{{ u.full_name }}</span>
+                <span class="u-username">@{{ u.username }}</span>
+                <span class="u-email">{{ u.email }}</span>
+              </div>
+            </td>
+            <td>
+              <span
+                class="badge {% if u.role == 'ADMIN' %}badge-admin{% else %}badge-user{% endif %}"
+              >
+                {{ u.role }}
+              </span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button
+                  type="button"
+                  class="btn-icon btn-edit"
+                  onclick="openEditModal('{{u.id}}', '{{u.full_name}}', '{{u.username}}', '{{u.email}}', '{{u.role}}')"
+                  title="Edit Data"
+                >
+                  <span class="material-icons" style="font-size: 1.1rem"
+                    >edit</span
+                  >
+                </button>
+
+                <form class="inline-form form-reset-pass">
+                  <input type="hidden" name="user_id" value="{{ u.id }}" />
+                  <div class="reset-pass-group">
+                    <input
+                      type="password"
+                      name="new_password"
+                      id="pass-{{u.id}}"
+                      placeholder="Min 8 Karakter"
+                      class="input-pass-mini"
+                      minlength="8"
+                      required
+                    />
+                    <span
+                      class="material-icons eye-icon"
+                      style="font-size: 1rem; color: #aaa; cursor: pointer"
+                      onclick="togglePassword('pass-{{u.id}}', this)"
+                      >visibility_off</span
+                    >
+                  </div>
+                  <button type="submit" class="btn-reset">Reset</button>
+                </form>
+
+                {% if u.username != user.username %}
+                <button
+                  type="button"
+                  class="btn-icon btn-delete"
+                  onclick="deleteUser('{{ u.id }}', '{{ u.username }}')"
+                  title="Hapus User"
+                >
+                  <span class="material-icons" style="font-size: 1.1rem"
+                    >delete</span
+                  >
+                </button>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="admin-content-card" style="margin-top: 30px">
+    <div class="card-header-row">
+      <h3>Manajemen Konten (Jurnal/Artikel/Website)</h3>
+      <button
+        class="btn-add-account"
+        style="background: var(--gradient-mid)"
+        onclick="openArticleModal()"
+      >
+        <span class="material-icons">post_add</span> Tambah Konten
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th width="25%">Judul Konten</th>
+            <th width="15%">Kategori</th>
+            <th width="15%">Tipe</th>
+            <th width="30%">Link / Sumber</th>
+            <th width="15%">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if articles_list %} {% for art in articles_list %}
+          <tr>
+            <td>
+              <div class="user-info-cell">
+                <span class="u-fullname">{{ art.title }}</span>
+                <span class="u-email">{{ art.description[:30] }}...</span>
+              </div>
+            </td>
+            <td>
+              <span class="badge" style="background: #eef2ff; color: #6366f1">
+                {{ art.category }}
+              </span>
+            </td>
+            <td>
+              {% if art.type == 'WEB' %}
+              <span class="badge" style="background: #ecfdf5; color: #059669"
+                >WEB</span
+              >
+              {% else %}
+              <span class="badge" style="background: #fef2f2; color: #dc2626"
+                >PDF</span
+              >
+              {% endif %}
+            </td>
+            <td>
+              <a
+                href="{{ art.url }}"
+                target="_blank"
+                style="
+                  font-size: 0.85rem;
+                  color: #2563eb;
+                  text-decoration: underline;
+                "
+              >
+                Buka Link
+                <span class="material-icons" style="font-size: 0.8rem"
+                  >open_in_new</span
+                >
+              </a>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button
+                  type="button"
+                  class="btn-icon btn-edit"
+                  onclick="openEditArticleModal('{{ art.id }}', '{{ art.title }}', '{{ art.description }}', '{{ art.category }}', '{{ art.type }}', '{{ art.url }}')"
+                  title="Edit Artikel"
+                >
+                  <span class="material-icons" style="font-size: 1.1rem"
+                    >edit</span
+                  >
+                </button>
+                <button
+                  type="button"
+                  class="btn-icon btn-delete"
+                  onclick="deleteArticle('{{ art.id }}')"
+                  title="Hapus Artikel"
+                >
+                  <span class="material-icons" style="font-size: 1.1rem"
+                    >delete</span
+                  >
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %} {% else %}
+          <tr>
+            <td
+              colspan="5"
+              style="text-align: center; padding: 30px; color: #999"
+            >
+              <span
+                class="material-icons"
+                style="
+                  font-size: 3rem;
+                  color: #eee;
+                  display: block;
+                  margin-bottom: 10px;
+                "
+                >library_books</span
+              >
+              Belum ada data artikel. Silakan tambahkan dari tombol di atas.
+            </td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="createModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Tambah Pengguna Baru</h3>
+      <button
+        type="button"
+        class="close-modal-btn"
+        onclick="closeCreateModal()"
+      >
+        &times;
+      </button>
+    </div>
+    <form id="formCreateUser">
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input type="text" name="full_name" class="form-input" required />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" class="form-input" required />
+      </div>
+      <div class="form-group">
+        <label>Nama Pengguna</label>
+        <input type="text" name="username" class="form-input" required />
+      </div>
+      <div class="form-group">
+        <label>Kata Sandi</label>
+        <div class="password-wrapper">
+          <input
+            type="password"
+            id="create_password"
+            name="password"
+            class="form-input"
+            placeholder="Minimal 8 karakter"
+            minlength="8"
+            required
+          />
+          <span
+            class="material-icons toggle-password"
+            onclick="togglePassword('create_password', this)"
+            >visibility_off</span
+          >
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Role</label>
+        <select name="role" class="form-input">
+          <option value="USER">User Biasa</option>
+          <option value="ADMIN">Administrator</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn-secondary"
+          onclick="closeCreateModal()"
+        >
+          Batal
+        </button>
+        <button type="submit" class="btn-primary">Buat Akun</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="editModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Edit Data Pengguna</h3>
+      <button type="button" class="close-modal-btn" onclick="closeEditModal()">
+        &times;
+      </button>
+    </div>
+    <form id="formEditUser">
+      <input type="hidden" id="edit_id" name="user_id" />
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input
+          type="text"
+          id="edit_fullname"
+          name="full_name"
+          class="form-input"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label>Username</label>
+        <input
+          type="text"
+          id="edit_username"
+          name="username"
+          class="form-input"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="email"
+          id="edit_email"
+          name="email"
+          class="form-input"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label>Role</label>
+        <select id="edit_role" name="role" class="form-input">
+          <option value="USER">User Biasa</option>
+          <option value="ADMIN">Administrator</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeEditModal()">
+          Batal
+        </button>
+        <button type="submit" class="btn-primary">Simpan Perubahan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="articleModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="articleModalTitle">Tambah Konten</h3>
+      <button
+        type="button"
+        class="close-modal-btn"
+        onclick="closeArticleModal()"
+      >
+        &times;
+      </button>
+    </div>
+
+    <form id="formArticle">
+      <input type="hidden" id="art_id" name="article_id" />
+      <div class="form-group">
+        <label>Judul Konten</label>
+        <input
+          type="text"
+          id="art_title"
+          name="title"
+          class="form-input"
+          placeholder="Contoh: Sejarah Impressionism"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Deskripsi Singkat</label>
+        <input
+          type="text"
+          id="art_desc"
+          name="description"
+          class="form-input"
+          placeholder="Penjelasan singkat..."
+          required
+        />
+      </div>
+
+      <div
+        class="split-layout"
+        style="grid-template-columns: 1fr 1fr; gap: 1rem; display: grid"
+      >
+        <div class="form-group">
+          <label>Kategori (Menu)</label>
+          <select id="art_category" name="category" class="form-input">
+            <option value="general">Dasar Pengetahuan (General)</option>
+            <option value="styles">Aliran & Gaya (Styles)</option>
+            <option value="technique">Teknik & Warna (Technique)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tipe Sumber</label>
+          <select id="art_type" name="type" class="form-input">
+            <option value="WEB">Website / Artikel</option>
+            <option value="PDF">Jurnal PDF</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Link URL / Lokasi File</label>
+        <input
+          type="text"
+          id="art_url"
+          name="url"
+          class="form-input"
+          placeholder="https://... atau /static/journals/..."
+          required
+        />
+        <small style="color: #666; font-size: 0.8rem"
+          >Jika PDF lokal, masukkan path static (misal:
+          /static/journals/nama.pdf)</small
+        >
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn-secondary"
+          onclick="closeArticleModal()"
+        >
+          Batal
+        </button>
+        <button type="submit" class="btn-primary">Simpan Artikel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ url_for('static', path='js/script.js') }}"></script>
+{% endblock %}

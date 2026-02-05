@@ -1,0 +1,20 @@
+fastapi
+uvicorn
+jinja2
+python-multipart
+sqlalchemy
+openai
+requests
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt==3.2.2
+Pillow
+python-dotenv
+
+# --- LIBRARY AI & MODEL (TAMBAHAN) ---
+torch
+torchvision
+ftfy
+regex
+tqdm
+git+https://github.com/openai/CLIP.git

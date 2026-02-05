@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NatsArt AI{% endblock %}</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    {% block head_extra %}{% endblock %}
+</head>
+
+<body>
+
+    {# Cek variabel context untuk menyembunyikan navbar #}
+    {% if not hide_navbar %}
+    <nav class="navbar fade-in">
+        <a href="/" class="logo" style="text-decoration: none;">NatsArt AI</a>
+        
+        <div class="nav-links">
+            {# --- LOGIKA NAVBAR --- #}
+            
+            {# 1. JIKA USER LOGIN (Hanya Dropdown Profil) #}
+            {% if user %}
+                
+                <div class="user-dropdown-container">
+                    <button class="user-btn {% if is_admin_page %}admin-btn-style{% endif %}" onclick="toggleUserMenu()">
+                        <div class="user-avatar-small {% if is_admin_page %}admin-avatar{% endif %}">
+                            <i class="fas {% if is_admin_page %}fa-shield-alt{% else %}fa-user{% endif %}"></i>
+                        </div>
+                        <span class="user-name-label">{{ user.username }}</span>
+                        <i class="fas fa-chevron-down arrow-icon"></i>
+                    </button>
+
+                    <div class="user-dropdown-menu" id="userDropdown">
+                        <div class="dropdown-header">
+                            <p class="dd-fullname">
+                                {{ user.full_name if user.full_name else 'Pengguna' }}
+                            </p>
+                            <p class="dd-email">{{ user.email }}</p>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        
+                        {# --- LOGIKA MENU DROPDOWN --- #}
+                        
+                        {# 1. Jika Sedang di Halaman Admin Dashboard #}
+                        {# Tampilkan HANYA tombol Keluar (Sesuai Request) #}
+                        {# Tombol Beranda SELALU ADA untuk user login #}
+                        <a href="/" class="dropdown-item">
+                            <i class="fas fa-home"></i> Beranda
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a href="/logout" class="dropdown-item logout-item">
+                            <i class="fas fa-sign-out-alt"></i> Keluar
+                        </a>
+
+            {# 2. JIKA TAMU DI HALAMAN CLASSIFY (Beranda & Login) #}
+            {% elif is_classify_page %}
+                <a href="/">Beranda</a>
+                <a href="/login" class="nav-btn">Login / Register</a>
+
+            {# 3. JIKA TAMU DI HALAMAN LAIN (Standar) #}
+            {% else %}
+                <a href="/">Beranda</a>
+                <a href="/about">Tentang Seni Lukis</a>
+                <a href="/articles">Artikel</a> 
+                <a href="/login" class="nav-btn">Login / Register</a>
+            {% endif %}
+        </div>
+    </nav>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% if not hide_footer %}
+    <footer class="fade-in">
+        <div class="footer-container">
+            <div class="footer-left">
+                <p class="quote-text">"Melalui seni, kita dapat berbicara dengan hati manusia"</p>
+                <p class="quote-author">&mdash; Vincent van Gogh &mdash;</p>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="https://github.com/anatasiasb30"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/anatasiaauliendasubandri"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.instagram.com/anatasiasb_"><i class="fab fa-instagram"></i></a>
+                </div>
+                <p class="footer-copyright">&copy; 2026 Anatasia. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    {% endif %}
+
+    <script src="{{ url_for('static', path='/js/script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        // Cek apakah ada pesan awal dari Backend (dikirim lewat context)
+        // Ini cara agar Tamu bisa lihat hasil gambar di Chatbot
+        // Variabel 'initial_chat_message' dikirim dari classification.py
+        
+        // Kita butuh cara mengambil data ini. Cara termudah adalah menyisipkannya
+        // sebagai elemen hidden di classify.html, lalu JS membacanya.
+        // TAPI karena base.html ini parent, kita taruh script logic-nya di classify.html saja.
+        // Di sini kosongkan saja.
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

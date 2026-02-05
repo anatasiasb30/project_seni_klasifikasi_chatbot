@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Home - NatsArt AI{% endblock %}
+
+{% block content %}
+<section class="hero-section hero-gradient-wave">
+    
+    <div class="hero-art-decoration">
+        <img src="{{ url_for('static', path='/img/impressionism.png') }}" alt="Impressionism Art" class="deco-art-img" style="--i:1;">
+        <img src="{{ url_for('static', path='/img/surrealism.png') }}" alt="Surrealism Art" class="deco-art-img" style="--i:2;">
+        <img src="{{ url_for('static', path='/img/expressionism.png') }}" alt="Expressionism Art" class="deco-art-img" style="--i:3;">
+        <img src="{{ url_for('static', path='/img/impressionism2.jpg') }}" alt="Impressionism Art" class="deco-art-img" style="--i:4;">
+        <img src="{{ url_for('static', path='/img/surrealism2.png') }}" alt="Surrealism Art" class="deco-art-img" style="--i:5;">
+        <img src="{{ url_for('static', path='/img/expressionism2.jpg') }}" alt="Expressionism Art" class="deco-art-img" style="--i:6;">
+    </div>
+    <div class="hero-content fade-in" style="animation-delay: 0.2s;">
+        <h1 class="hero-title">Sistem Klasifikasi Aliran Seni<br>Lukis dan Chatbot</h1>
+        <p class="hero-subtitle">Klasifikasikan lukisan Impressionism, Expressionism, atau Surrealism secara instan dan dapatkan penjelasan kontekstual mengenai aliran seni yang teridentifikasi</p>
+        <div style="margin-top: 2rem;">
+            <a href="/classify" class="btn-hero">Mulai Sekarang</a>
+            <a href="#panduan" class="btn-hero" style="background:transparent; border:2px solid white; color:white;">Panduan</a>
+        </div>
+    </div>
+</section>
+
+<div class="section-container fade-in" style="animation-delay: 0.6s; width: 100%;">
+    <section id="panduan" style="position: relative;"> 
+        <img src="{{ url_for('static', path='/img/tandaseru.png') }}" alt="Dekorasi" class="panduan-decor top-left-decor">
+        <h2 class="section-title">Panduan Penggunaan</h2>
+        <p class="section-subtitle">Ikuti langkah mudah berikut.</p>
+        <div class="step-process-container">
+            <div class="step-process">
+                <div class="step-item"><div class="step-circle">1</div><div class="step-title">Upload</div><div class="step-desc">Unggah Gambar Lukisan Impressionism, Expressionism & Surrealism</div></div>
+                <div class="step-item"><div class="step-circle">2</div><div class="step-title">Tunggu</div><div class="step-desc">AI Menganalisis Hasil Unggahan Gambar Lukisan</div></div>
+                <div class="step-item"><div class="step-circle">3</div><div class="step-title">Hasil</div><div class="step-desc">Melihat Hasil Klasifikasi</div></div>
+                <div class="step-item"><div class="step-circle">4</div><div class="step-title">Chatbot</div><div class="step-desc">Tanya Jawab Terkait Gambar Yang Diunggah/Teori Umum Terkait Lukisan Impressionism, Expressionism dan Surrealism</div></div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

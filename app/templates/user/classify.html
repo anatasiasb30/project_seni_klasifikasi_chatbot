@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Klasifikasi & Chatbot - NatsArt.AI{% endblock %}
+
+{% block content %}
+<main class="container classify-container">
+    <div class="split-layout">
+        
+        <input type="hidden" id="current-history-id" value="{{ current_history_id if current_history_id else '' }}">
+
+        {% if initial_chat_message %}
+        <input type="hidden" id="initial-chat-message" value="{{ initial_chat_message }}">
+        {% endif %}
+
+        <section class="upload-section card-glass">
+            <div class="section-header-left">
+                <div class="header-icon-badge"><span class="material-icons">palette</span></div>
+                <div>
+                    <h2>Klasifikasi Lukisan</h2>
+                    <p>Unggah gambar untuk mendeteksi aliran seni</p>
+                </div>
+            </div>
+
+            {% if error %}<input type="hidden" id="backend-error-data" value="{{ error }}">{% endif %}
+
+            <form action="/upload" method="POST" enctype="multipart/form-data" id="upload-form" style="display: flex; flex-direction: column; flex-grow: 1;">
+                <div class="upload-area" id="upload-area">
+                    <input type="file" id="file-input" name="file" accept=".jpg, .jpeg, .png" hidden required>
+                    <div class="upload-placeholder" id="upload-placeholder">
+                        <div class="icon-circle"><span class="material-icons">cloud_upload</span></div>
+                        <h4>Tarik & Lepas Gambar</h4>
+                        <p>Format: JPG/JPEG/PNG (Max. 5MB)</p>
+                        <button type="button" class="browse-btn ripple">Pilih File</button>
+                    </div>
+                    <div class="image-preview-container" id="image-preview-container" hidden>
+                        <img id="image-preview" class="image-preview" src="" alt="Preview">
+                        <button type="button" class="remove-image" id="remove-image"><span class="material-icons">close</span></button>
+                    </div>
+                </div>
+                <button type="submit" id="classify-btn" class="btn-primary full-width" disabled>
+                    <span class="btn-text">Mulai Analisis</span>
+                </button>
+            </form>
+        </section>
+
+        <section class="chat-section card-glass {% if result %}chat-unlocked{% endif %}" id="chat-section">
+            <div class="chat-overlay" id="chat-overlay">
+                <div class="overlay-content">
+                    <div class="overlay-icon"><span class="material-icons">lock_person</span></div>
+                    <h4>Chat Terkunci</h4>
+                    <p>Analisis lukisan terlebih dahulu.</p>
+                </div>
+            </div>
+
+            <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="ai-avatar"><span class="material-icons">smart_toy</span></div>
+                    <div class="chat-info"><h3>Chatbot Kontekstual</h3><p>Siap Membantu</p></div>
+                </div>
+                <button id="clear-chat-btn" type="button" style="background:transparent; border:none; color:#ff6b6b; cursor:pointer;">
+                    <span class="material-icons">delete_outline</span>
+                </button>
+            </div>
+
+            <div class="chat-window" id="chat-window"></div>
+
+            <div class="chat-footer">
+                {% if result %}
+                <div id="result-style" style="display:none;">{{ result.label }}</div>
+                <div class="chat-suggestions" id="chat-suggestions" style="margin-bottom: 10px; display: flex; gap: 5px; flex-wrap: wrap;">
+                    <button class="chip" style="font-size: 0.8rem; padding: 5px 12px; border-radius: 20px; border: 1px solid #e2e8f0; background: white; cursor: pointer; color: #64748b;">Ciri Khas {{ result.label }}?</button>
+                    <button class="chip" style="font-size: 0.8rem; padding: 5px 12px; border-radius: 20px; border: 1px solid #e2e8f0; background: white; cursor: pointer; color: #64748b;">Tokoh {{ result.label }}?</button>
+                    <button class="chip" style="font-size: 0.8rem; padding: 5px 12px; border-radius: 20px; border: 1px solid #e2e8f0; background: white; cursor: pointer; color: #64748b;">Sejarah {{ result.label }}?</button>
+                </div>
+                {% endif %}
+
+                <div class="input-group">
+                    <input type="text" id="chat-input" placeholder="Ketik pertanyaan..." {% if not result %}disabled{% endif %}>
+                    <button id="send-btn" class="btn-send" {% if not result %}disabled{% endif %}>
+                        <span class="material-icons">send</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock %}

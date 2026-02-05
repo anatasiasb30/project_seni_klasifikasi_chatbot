@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Tentang Seni Lukis - NatsArt AI{% endblock %}
+
+{% block content %}
+<section class="hero-section hero-gradient-wave" style="min-height: 100vh; padding-top: 200px; align-items: center;"> 
+    <div class="hero-content hide-initially" style="text-align: center; margin: 0 auto; padding-top: 0;"> 
+        <h1 class="hero-title fade-in" style="font-size: 3rem; margin-top: 0;">Tentang Seni Lukis</h1> 
+        <p class="hero-subtitle fade-in" style="animation-delay: 0.2s;">Pelajari dasar-dasar, elemen, dan prinsip seni lukis secara singkat untuk menambah pemahaman Anda.</p>
+        
+        <div style="margin-top: 2rem; margin-bottom: 3rem;">
+            <a href="#" onclick="scrollToSection(event, 'definisi')" class="btn-hero fade-in" style="animation-delay: 0.4s;">
+                Jelajahi
+            </a>
+        </div>
+
+        <div class="hero-decorations fade-in" style="animation-delay: 0.6s;">
+            <img src="{{ url_for('static', path='/img/kuasbesar.png') }}" alt="Kuas Besar" class="decor-item item-up">
+            
+            <img src="{{ url_for('static', path='/img/palet.png') }}" alt="Palet" class="decor-item item-down">
+            
+            <img src="{{ url_for('static', path='/img/rollcat.png') }}" alt="Roll Cat" class="decor-item item-up">
+            
+            <img src="{{ url_for('static', path='/img/kuaskecil.png') }}" alt="Kuas Kecil" class="decor-item item-down">
+        </div>
+        </div>
+</section>
+
+<div class="section-container">
+    
+    <section id="definisi" class="fade-in" style="animation-delay: 0.2s;">
+    
+    <div class="section-header-box">
+       <h2 class="section-title">Apa Itu Seni Lukis?</h2>
+       <p class="section-subtitle" style="margin-bottom: 4rem;">Memahami esensi dari seni lukis sebagai bentuk ekspresi visual.</p>
+        
+        <div class="definition-grid">
+            <div class="glass-card">
+                <h3>Definisi Seni Lukis</h3>
+                <p>Seni lukis adalah cabang seni rupa yang mengekspresikan pengalaman artistik manusia melalui bidang dua dimensi. Berbeda dengan menggambar, seni lukis lebih menekankan pada pengolahan unsur visual (garis, warna, tekstur, dan gelap-terang) untuk menciptakan kesan estetis dan makna subjektif yang mendalam.</p>
+            </div>
+            <div class="glass-card">
+                <h3>Fungsi Seni Lukis</h3>
+                <p>Seni lukis berfungsi sebagai sarana ekspresi primer (pengungkapan batin/emosi seniman), media sosial (kritik, propaganda, dan religiusitas), serta fungsi fisik (sebagai elemen estetis/dekoratif untuk memenuhi kebutuhan pasar atau keindahan ruang).</p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem;">
+             <a href="#" onclick="scrollToSection(event, 'pengetahuan')" class="btn-hero btn-lanjut">
+                Lanjut
+            </a>
+        </div>
+    </section>
+
+    <div class="section-container fade-in" style="animation-delay: 0.2s; width: 100%; margin-top: 4rem;">
+        <section id="pengetahuan" class="fade-in" style="animation-delay: 0.2s;">
+        <div class="section-header-box">
+            <h2 class="section-title">Pengetahuan Dasar</h2>
+            <p class="section-subtitle" style="margin-bottom: 4rem;">Klik kartu di bawah untuk mempelajari detail elemen, prinsip, dan teknik secara dasar.</p>
+            
+            <div class="knowledge-grid">
+                
+                <div class="knowledge-card">
+                    <div class="card-header">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎨</div>
+                        <h3>Elemen Dasar</h3>
+                        <p class="toggle-text" style="color: var(--gradient-mid); font-weight: 600; font-size: 0.9rem;">Klik untuk Lihat Detail &#9662;</p>
+                    </div>
+                    <div class="knowledge-details">
+                        <div class="detail-item"><h4>Titik & Garis</h4><p>Titik merupakan unsur dasar, sedangkan garis terbentuk dari pergerakan titik.</p></div>
+                        <div class="detail-item"><h4>Bidang & Bentuk</h4><p>Bidang merupakan area dua dimensi, sedangkan bentuk merujuk pada kesan volume tiga dimensi.</p></div>
+                        <div class="detail-item"><h4>Warna</h4><p>Unsur visual yang memberikan kesan emosional, terdiri dari hue, value, dan saturation.</p></div>
+                        <div class="detail-item"><h4>Tekstur</h4><p>Kesan permukaan suatu objek, baik yang bersifat nyata (raba) maupun semu (visual).</p></div>
+                        <div class="detail-item"><h4>Gelap Terang</h4><p>Perbedaan intensitas cahaya yang menciptakan kesan volume dan kedalaman.</p></div>
+                    </div>
+                </div>
+
+                <div class="knowledge-card">
+                    <div class="card-header">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">⚖️</div>
+                        <h3>Prinsip Lukis</h3>
+                        <p class="toggle-text" style="color: var(--gradient-mid); font-weight: 600; font-size: 0.9rem;">Klik untuk Lihat Detail &#9662;</p>
+                    </div>
+                    <div class="knowledge-details">
+                        <div class="detail-item"><h4>Kesatuan (Unity)</h4><p>Kepaduan antar unsur seni sehingga membentuk satu kesatuan visual yang harmonis.</p></div>
+                        <div class="detail-item"><h4>Keseimbangan</h4><p>Pembagian bobot visual secara simetris maupun asimetris agar komposisi terasa stabil.</p></div>
+                        <div class="detail-item"><h4>Irama</h4><p>Pengulangan unsur visual yang menciptakan kesan gerak atau alur pandang.</p></div>
+                        <div class="detail-item"><h4>Penekanan</h4><p>Penonjolan bagian tertentu sebagai pusat perhatian dalam karya.</p></div>
+                        <div class="detail-item"><h4>Proporsi</h4><p>Hubungan perbandingan ukuran antar unsur dalam suatu komposisi.</p></div>
+                    </div>
+                </div>
+
+                <div class="knowledge-card">
+                    <div class="card-header">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🖌️</div>
+                        <h3>Teknik Lukis</h3>
+                        <p class="toggle-text" style="color: var(--gradient-mid); font-weight: 600; font-size: 0.9rem;">Klik untuk Lihat Detail &#9662;</p>
+                    </div>
+                    <div class="knowledge-details">
+                        <div class="detail-item"><h4>Aquarel</h4><p>Sapuan tipis dan transparan menggunakan cat air yang memanfaatkan putih kertas sebagai pencahayaan.</p></div>
+                        <div class="detail-item"><h4>Plakat</h4><p>Sapuan cat bersifat opak dengan warna pekat yang menutupi lapisan di bawahnya.</p></div>
+                        <div class="detail-item"><h4>Pointilis</h4><p>Teknik melukis menggunakan susunan titik-titik kecil warna yang menghasilkan pencampuran optik secara visual.</p></div>
+                        <div class="detail-item"><h4>Spray</h4><p>Teknik melukis menggunakan cat semprot yang menghasilkan efek gradasi dan tekstur halus.</p></div>
+                        <div class="detail-item"><h4>Tempera</h4><p>Teknik melukis menggunakan pigmen yang dicampur dengan bahan pengikat, umumnya berbasis kuning telur.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

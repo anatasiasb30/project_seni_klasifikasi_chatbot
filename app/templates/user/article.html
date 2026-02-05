@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Artikel Seni - NatsArt.AI{% endblock %}
+
+{% block content %}
+<div class="article-container">
+    
+    <div class="section-header fade-in-element">
+        <h2>Wawasan Seni</h2>
+        <p>Jelajahi pengetahuan mendalam tentang dunia seni lukis</p>
+    </div>
+
+    <div class="article-grid">
+        
+        <article class="article-card slide-up-card" style="--delay: 0.2s">
+            <div class="card-icon-bg"><span class="material-icons">brush</span></div>
+            <div class="card-content">
+                <h3>Seni Lukis</h3>
+                <p>Sejarah, definisi, dan perkembangan seni lukis sebagai media ekspresi visual utama manusia.</p>
+                <button type="button" onclick="openModal('generalModal')" class="read-more-btn">
+                    Baca Selengkapnya <span class="material-icons">arrow_forward</span>
+                </button>
+            </div>
+        </article>
+
+        <article class="article-card slide-up-card" style="--delay: 0.4s">
+            <div class="card-icon-bg"><span class="material-icons">auto_awesome</span></div>
+            <div class="card-content">
+                <h3>Aliran & Gaya</h3>
+                <p>Mengenal karakteristik unik Impressionism, Expressionism, dan Surrealism.</p>
+                <button type="button" onclick="openModal('journalModal')" class="read-more-btn">
+                    Baca Selengkapnya <span class="material-icons">arrow_forward</span>
+                </button>
+            </div>
+        </article>
+
+        <article class="article-card slide-up-card" style="--delay: 0.6s">
+            <div class="card-icon-bg"><span class="material-icons">palette</span></div>
+            <div class="card-content">
+                <h3>Teknik & Warna</h3>
+                <p>Panduan dasar komposisi warna, alat lukis, dan teknik penciptaan karya yang harmonis.</p>
+                <button type="button" onclick="openModal('techniqueModal')" class="read-more-btn">
+                    Baca Selengkapnya <span class="material-icons">arrow_forward</span>
+                </button>
+            </div>
+        </article>
+
+    </div>
+</div>
+
+<div id="generalModal" class="modal-overlay">
+    <div class="modal-box card-glass">
+        <div class="modal-header">
+            <h3>Dasar Pengetahuan Seni</h3>
+            <button type="button" onclick="closeModal('generalModal')" class="close-btn"><span class="material-icons">close</span></button>
+        </div>
+        
+        <div class="modal-scroll-content">
+            {% if articles['general'] %}
+                <h5 class="modal-section-title">Bacaan Populer (Web)</h5>
+                <div class="journal-list">
+                    {% for art in articles['general'] if art.type == 'WEB' %}
+                    <a href="{{ art.url }}" target="_blank" class="journal-item">
+                        <div class="journal-icon"><span class="material-icons">public</span></div>
+                        <div class="journal-text">
+                            <h4>{{ art.title }}</h4>
+                            <span>{{ art.description }}</span>
+                        </div>
+                        <span class="material-icons arrow">open_in_new</span>
+                    </a>
+                    {% else %}
+                        <p style="font-size:0.8rem; color:#ccc; font-style:italic;">Tidak ada artikel web.</p>
+                    {% endfor %}
+                </div>
+
+                <hr class="modal-divider">
+
+                <h5 class="modal-section-title">Referensi Ilmiah (PDF)</h5>
+                <div class="journal-list">
+                    {% for art in articles['general'] if art.type == 'PDF' %}
+                    <a href="{{ art.url }}" target="_blank" class="journal-item pdf-item">
+                        <div class="journal-icon"><span class="material-icons">download</span></div>
+                        <div class="journal-text">
+                            <h4>{{ art.title }}</h4>
+                            <span>{{ art.description }}</span>
+                        </div>
+                    </a>
+                    {% else %}
+                        <p style="font-size:0.8rem; color:#ccc; font-style:italic;">Tidak ada file PDF.</p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="text-align:center; color:#999; padding:20px;">Belum ada konten di kategori ini.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div id="journalModal" class="modal-overlay">
+    <div class="modal-box card-glass">
+        <div class="modal-header">
+            <h3>Aliran & Gaya Seni</h3>
+            <button type="button" onclick="closeModal('journalModal')" class="close-btn"><span class="material-icons">close</span></button>
+        </div>
+        
+        <div class="modal-scroll-content">
+            {% if articles['styles'] %}
+                <h5 class="modal-section-title">Eksplorasi Aliran (Web)</h5>
+                <div class="journal-list">
+                    {% for art in articles['styles'] if art.type == 'WEB' %}
+                    <a href="{{ art.url }}" target="_blank" class="journal-item">
+                        <div class="journal-icon"><span class="material-icons">palette</span></div>
+                        <div class="journal-text">
+                            <h4>{{ art.title }}</h4>
+                            <span>{{ art.description }}</span>
+                        </div>
+                        <span class="material-icons arrow">open_in_new</span>
+                    </a>
+                    {% else %}
+                        <p style="font-size:0.8rem; color:#ccc; font-style:italic;">Tidak ada artikel web.</p>
+                    {% endfor %}
+                </div>
+
+                <hr class="modal-divider">
+
+                <h5 class="modal-section-title">Referensi Ilmiah (PDF)</h5>
+                <div class="journal-list">
+                    {% for art in articles['styles'] if art.type == 'PDF' %}
+                    <a href="{{ art.url }}" target="_blank" class="journal-item pdf-item">
+                        <div class="journal-icon"><span class="material-icons">download</span></div>
+                        <div class="journal-text">
+                            <h4>{{ art.title }}</h4>
+                            <span>{{ art.description }}</span>
+                        </div>
+                    </a>
+                    {% else %}
+                        <p style="font-size:0.8rem; color:#ccc; font-style:italic;">Tidak ada file PDF.</p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="text-align:center; color:#999; padding:20px;">Belum ada konten di kategori ini.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div id="techniqueModal" class="modal-overlay">
+    <div class="modal-box card-glass">
+        <div class="modal-header">
+            <h3>Teknik & Warna</h3>
+            <button type="button" onclick="closeModal('techniqueModal')" class="close-btn"><span class="material-icons">close</span></button>
+        </div>
+        
+        <div class="modal-scroll-content">
+            {% if articles['technique'] %}
+                <h5 class="modal-section-title">Panduan Praktis (Web)</h5>
+                <div class="journal-list">
+                    {% for art in articles['technique'] if art.type == 'WEB' %}
+                    <a href="{{ art.url }}" target="_blank" class="journal-item">
+                        <div class="journal-icon"><span class="material-icons">brush</span></div>
+                        <div class="journal-text">
+                            <h4>{{ art.title }}</h4>
+                            <span>{{ art.description }}</span>
+                        </div>
+                        <span class="material-icons arrow">open_in_new</span>
+                    </a>
+                    {% else %}
+                        <p style="font-size:0.8rem; color:#ccc; font-style:italic;">Tidak ada artikel web.</p>
+                    {% endfor %}
+                </div>
+
+                <hr class="modal-divider">
+
+                <h5 class="modal-section-title">Referensi Ilmiah (PDF)</h5>
+                <div class="journal-list">
+                    {% for art in articles['technique'] if art.type == 'PDF' %}
+                    <a href="{{ art.url }}" target="_blank" class="journal-item pdf-item">
+                        <div class="journal-icon"><span class="material-icons">download</span></div>
+                        <div class="journal-text">
+                            <h4>{{ art.title }}</h4>
+                            <span>{{ art.description }}</span>
+                        </div>
+                    </a>
+                    {% else %}
+                        <p style="font-size:0.8rem; color:#ccc; font-style:italic;">Tidak ada file PDF.</p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="text-align:center; color:#999; padding:20px;">Belum ada konten di kategori ini.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
