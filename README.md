@@ -63,20 +63,29 @@ git clone [https://github.com/anatasiaauliendasubandri/project_seni_klasifikasi_
 cd project_seni_klasifikasi_chatbot
 ```
 ### 2. Buat & Aktifkan Virtual Environment (Opsional)
+```bash
 python -m venv venv
+
 
 Aktifkan di macOS/Linux:
 source venv/bin/activate
 
 Aktifkan di Windows (Command Prompt/PowerShell):
 venv\Scripts\activate
+```
 
 ### 3. Instal Dependencies
+```bash
 pip install -r requirements.txt
+```
 
 ### 4. Jalankan Aplikasi
+```bash
 uvicorn app.main:app --reload
+```
 
 ### 5. Akses di Browser
+```bash
 Buka browser dan kunjungi:
 [http://127.0.0.1:8000](http://127.0.0.1:8000)
+```
